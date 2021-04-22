@@ -15,7 +15,7 @@ static async getFrasesWikipedia(word){
   //Esperar a que es carreguin les diferents noticies
   await page.waitForTimeout(3000);
 
-  //Guardo tots els ennlaços
+  //Guardo tots els enlaços
   const enlaces= await page.evaluate(()=>{
     //Els guardo en un array elements cada a
     const elements= document.querySelectorAll('.newsFeed_item_link');

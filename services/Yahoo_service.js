@@ -3,8 +3,8 @@ class Yahoo_service {
 constructor (){
 
 }
-//Base configuració
 static async getFrasesYahoo(word){
+  //Base configuració
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   //La web que vull buscar
@@ -14,41 +14,27 @@ static async getFrasesYahoo(word){
   await page.click("button #sc-ksYbfQ LoaVT");
   //Esperar a que es carreguin les diferents noticies
   await page.waitForTimeout(3000);
-  const resultados =[];
-  const resultado ={};
-
-  //Guardo tots els ennlaços
-  const enlaces= await page.evaluate(()=>{
-    //Els guardo en un array elements cada a
-    const elements= document.querySelectorAll('.newsFeed_item_link');
-    //Creo una variable per guardar els links
-    const links= [];
-    //guardo el link en si
-    for(let element of elements){
-      links.push(element.href);
-      }
-    return links;
+  const resultados = await page.evaluate(()=>{
+    //Els guardo els elements en dos arrays
+    //TEXTOS
+    const texts=document.querySelectorAll('.sc-ZOJMI');
+    //LINKS
+    const links= document.querySelectorAll('.newsFeed_item_link');
+   //Creo el objeto final que voy a tener
+   const resultadoFinal=[]
+    for (let i = 0; i < texts.length; i++) { 
+      //Creo un objecto temporal
+      const resultado ={};
+      //Asocio a cada apartado que quiera que tenga la aplabra correspondiente
+      resultado.text=texts[i];
+      resultado.link=links[i];
+      //Lo pongo en el array final
+      resultadoFinal.push(resultado);
+    }
   });
-
-  //Guardo tots els exemples
-  const text= await page.evaluate(()=>{
-    //Els guardo en un array elements cada a
-    const elements= document.querySelectorAll('.sc-ZOJMI bfJaxE');
-    //Creo una variable per guardar els exemples
-    const exemples= [];
-    //guardo el link en si
-    for(let element of elements){
-      exemples.push(element.href);  
-      }
-    return exemples;
-  });
-
-  
-
-
   
   await browser.close();
-  return frases;
+  return resultados;
 };
 
 }
