@@ -1,0 +1,4 @@
+# node_modules フォルダは要らない
+node_modules/
+
+#
