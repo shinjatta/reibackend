@@ -40,7 +40,7 @@ static async getFrasesNHK(word){
     //Creo l'objecte frase
     const frase ={};
     //Guardo la frase
-    frase.title= await page.evaluate(()=>{
+    frase.text= await page.evaluate(()=>{
       //Busco la part amb el selector titol
       //ATENTION: Nomes he agafat el titol perque aquesta web no te consistencia amb els diferents elements com es diuen els selectors i tona problemes
       const titulo= document.querySelector('.content--summary').innerText;
