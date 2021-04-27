@@ -6,6 +6,7 @@ constructor (){
 //Base configuració
 static async getFrasesNHK(word){
   const browser = await puppeteer.launch();
+  try {
   const page = await browser.newPage();
   //La paraula que vull buscar
   /* const word=palabra; */
@@ -15,47 +16,38 @@ static async getFrasesNHK(word){
   await page.type('#s', word);
   await page.click(".submit button");
   //Esperar a que es carreguin les diferents noticies
-  await page.waitForTimeout(3000);
-  //Guardo tots els ennlaços
-  const enlaces= await page.evaluate(()=>{
-    //Els guardo en un array elements cada a
-    const elements= document.querySelectorAll('.search--list li a');
-    //Creo una variable per guardar els links
-    const links= [];
-    //guardo el link en si
-    for(let element of elements){
-      links.push(element.href);  
-      }
-    return links;
-  });
-  console.log(enlaces.length);
-  //Creo el objecte que pasare
-  const frases =[];
-  //Visito cada enllaç
-  for(let enlace of enlaces){
-    //Vaig al enllaç que toca
-    await page.goto(enlace);
-    //Espero que carregui el titol
-    await page.waitForSelector('.content--summary',  {timeout: 1000});
-    //Creo l'objecte frase
-    const frase ={};
-    //Guardo la frase
-    frase.text= await page.evaluate(()=>{
-      //Busco la part amb el selector titol
-      //ATENTION: Nomes he agafat el titol perque aquesta web no te consistencia amb els diferents elements com es diuen els selectors i tona problemes
-      const titulo= document.querySelector('.content--summary').innerText;
-      return titulo;
-    });
-    //Guardo l'enllaç al objecte
-    frase.link=enlace
-    //L'afegeixo al objecte final
-    frases.push(frase);
+await page.waitForTimeout(3000);
+const resultados = await page.evaluate(()=>{
+  //Els guardo els elements en dos arrays
+  //TEXTOS
+  const texts=document.querySelectorAll('.search-note');
+  //LINKS
+  const links= document.querySelectorAll('.search--list li a');
+ //Creo el objeto final que voy a tener
+ const resultadoFinal=[]
+ //Faig que no en retorni més de 10
+ let numeroResultats=10;
+ if(texts.length<numeroResultats){
+   numeroResultats=texts.length;
+ }
+  for (let i = 0; i < numeroResultats; i++) { 
+    //Creo un objecto temporal
+    const resultado ={};
+    //Asocio a cada apartado que quiera que tenga la aplabra correspondiente y le digo inner text para tener le resultado de dentro del elemenyo
+    resultado.text=texts[i].innerText;
+    resultado.link=links[i].href;
+    //Lo pongo en el array final
+    resultadoFinal.push(resultado);
   }
-  //Mostro les frases
-   console.log(frases);
+  return resultadoFinal;
+});
 
+return resultados
+} catch (err) {
+  console.error(err.message);
+} finally {
   await browser.close();
-  return frases;
+}
 };
 
 }
