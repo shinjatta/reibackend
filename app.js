@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const service_nhk = require("./services/NHK_service.js");
 const service_yahoo= require("./services/Yahoo_service.js");
+const service_spanish= require("./services/Spanish_service.js")
 // create a new Express application instance
 const app = express();
 
@@ -27,6 +28,13 @@ app.get(`/frases/nhk/:word`, async (req, res) => {
 app.get(`/frases/yahoo/:word`, async (req, res) => {
   const palabra = req.params.word;
   const resultado = await service_yahoo.Yahoo_service.getFrasesYahoo(palabra);
+  if (!resultado) res.sendStatus(400);
+  res.status(200).json(resultado); 
+});
+
+app.get(`/traduccion/spanish/:word`, async (req, res) => {
+  const palabra = req.params.word;
+  const resultado = await service_spanish.Spanish_service.getSpanish(palabra);
   if (!resultado) res.sendStatus(400);
   res.status(200).json(resultado); 
 });
