@@ -71,7 +71,7 @@ app.post(`/historial/add`, async (req, res) => {
   };
   try{
     const data = await db.log(busqueda);
-    return res.status(200).send('recibido');
+    return res.status(200).send(data);
   }catch(e){
     console.log(e);
     return res.sendStatus(500).send('error');

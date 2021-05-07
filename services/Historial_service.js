@@ -35,8 +35,9 @@ reidb.one=(word)=>{
 
 reidb.log=(busqueda)=>{
   return new Promise((resolve, reject)=> {
-    const queryString = 'INSERT INTO `Rei`.`Search` (`word`, `search_date`) VALUES (?);';
-      pool.query(queryString, [busqueda], (error, results, fields)=> {
+    let propiedades=[busqueda.word, busqueda.search_date];
+    const queryString = 'INSERT INTO `Rei`.`Search` (`word`, `search_date`) VALUES (?, ?);';
+      pool.query(queryString, propiedades, (error, results, fields)=> {
           if(error){
               return reject(error);
           }
@@ -48,8 +49,9 @@ reidb.log=(busqueda)=>{
 
 reidb.newWord=(palabra)=>{
   return new Promise((resolve, reject)=> {
-    const queryString = "INSERT INTO `Rei`.`Word` (`word`, `times_Searched`, `word_Type`, `example1`, `example1link`, `example2`, `example2link`, `image1`, `image2`, `image3`, `english`, `spanish`) VALUES (?);";
-      pool.query(queryString, [palabra], (error, results, fields)=> {
+      let propiedades=[palabra.word, palabra.times_Searched, palabra.word_Type, palabra.example1, palabra.example1link, palabra.example2, palabra.example2link, palabra.image1, palabra.image2, palabra.image3, palabra.english, palabra.spanish];
+    const queryString = "INSERT INTO `Rei`.`Word` (`word`, `times_Searched`, `word_Type`, `example1`, `example1link`, `example2`, `example2link`, `image1`, `image2`, `image3`, `english`, `spanish`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      pool.query(queryString, propiedades, (error, results, fields)=> {
           if(error){
               return reject(error);
           }
