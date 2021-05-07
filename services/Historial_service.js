@@ -33,16 +33,30 @@ reidb.one=(word)=>{
     });
 };
 
-reidb.insert=(word, times, type, example1, link1, example2, link2, example3, link3, image1, image2, image3, english, spanish)=>{
-    return new Promise((resolve, reject)=> {
-        pool.query('INSERT INTO `Rei`.`Word` (`word`, `times_Searched`, `word_Type`, `example1`, `example1link`, `example2`, `example2link`, `image1`, `image2`, `image3`, `english`, `spanish`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [word], [times], [type], [example1], [link1], [example2], [link2], [example3], [link3], [image1], [image2], [image3], [english], [spanish], (err, results)=> {
-            if(err){
-                return reject(err);
-            }
-            return resolve('Correctamente insertado');
-        });
-    });
+reidb.log=(busqueda)=>{
+  return new Promise((resolve, reject)=> {
+    const queryString = 'INSERT INTO `Rei`.`Search` (`word`, `search_date`) VALUES (?);';
+      pool.query(queryString, [busqueda], (error, results, fields)=> {
+          if(error){
+              return reject(error);
+          }
+          const data = {results, fields};
+          return resolve(data);
+      });
+  });
+};
+
+reidb.newWord=(palabra)=>{
+  return new Promise((resolve, reject)=> {
+    const queryString = "INSERT INTO `Rei`.`Word` (`word`, `times_Searched`, `word_Type`, `example1`, `example1link`, `example2`, `example2link`, `image1`, `image2`, `image3`, `english`, `spanish`) VALUES (?);";
+      pool.query(queryString, [palabra], (error, results, fields)=> {
+          if(error){
+              return reject(error);
+          }
+          const data = {results, fields};
+          return resolve(data);
+      });
+  });
 };
 
 

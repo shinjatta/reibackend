@@ -61,13 +61,45 @@ app.get(`/historial/:word`, async (req, res, next) => {
     res.sendStatus(500);
   }
 });
-//Insert datos
-app.insert(`/historial/add`, async (req, res, next) => {
+//INSESRTS
+//Log
+app.post(`/historial/add`, async (req, res) => {
+  const {word, search_date} = req.body;
+  const busqueda={
+    word, 
+    search_date
+  };
   try{
-    let results = await db.one(req.params.word);
-    res.json(results);
+    const data = await db.log(busqueda);
+    return res.status(200).send('recibido');
   }catch(e){
     console.log(e);
-    res.sendStatus(500);
+    return res.sendStatus(500).send('error');
+  }
+});
+//Palabras nuevas
+app.post(`/diccionari/add`, async (req, res) => {
+  const {word, times_Searched, word_Type, example1, example1link, example2, 
+    example2link, image1, image2,image3, english, spanish} = req.body;
+  const palabra={
+    word, 
+    times_Searched, 
+    word_Type,
+    example1, 
+    example1link, 
+    example2, 
+    example2link, 
+    image1, 
+    image2,
+    image3, 
+    english, 
+    spanish
+  };
+  try{
+    const data = await db.newWord(palabra);
+    return res.status(200).send(data);
+  }catch(e){
+    console.log(e);
+    return res.sendStatus(500).send('error');
   }
 });
