@@ -52,7 +52,7 @@ app.get(`/historial`, async (req, res, next) => {
   }
 });
 //Get datos by palabra
-app.get(`/historial/:word`, async (req, res, next) => {
+app.get(`/diccionari/:word`, async (req, res, next) => {
   try{
     let results = await db.one(req.params.word);
     res.json(results);
@@ -61,6 +61,28 @@ app.get(`/historial/:word`, async (req, res, next) => {
     res.sendStatus(500);
   }
 });
+//Get ranking
+app.get(`/ranking`, async (req, res, next) => {
+  try{
+    let results = await db.ranking();
+    res.json(results);
+  }catch(e){
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
+//Get ultimos
+app.get(`/ultimas`, async (req, res, next) => {
+  try{
+    let results = await db.ultimos();
+    res.json(results);
+  }catch(e){
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 //INSESRTS
 //Log
 app.post(`/historial/add`, async (req, res) => {

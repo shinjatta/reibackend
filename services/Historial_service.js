@@ -22,6 +22,33 @@ reidb.all=()=>{
     });
 };
 
+reidb.ranking=()=>{
+    return new Promise((resolve, reject)=> {
+        pool.query('SELECT word, COUNT(word) AS total FROM rei.search GROUP BY word ORDER BY 2 DESC LIMIT 10', 
+        (err, results)=> {
+            if(err){
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+
+reidb.ultimos=()=>{
+    return new Promise((resolve, reject)=> {
+        pool.query('SELECT  word FROM rei.search  ORDER BY search_date DESC LIMIT 8', 
+        (err, results)=> {
+            if(err){
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
+
+
+
 reidb.one=(word)=>{
     return new Promise((resolve, reject)=> {
         pool.query('SELECT * FROM Rei.Word WHERE word = ?', [word], (err, results)=> {
@@ -60,6 +87,5 @@ reidb.newWord=(palabra)=>{
       });
   });
 };
-
 
 module.exports= reidb;
