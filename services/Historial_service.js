@@ -37,7 +37,7 @@ reidb.ranking=()=>{
 
 reidb.ultimos=()=>{
     return new Promise((resolve, reject)=> {
-        pool.query('SELECT  word FROM rei.search  ORDER BY search_date DESC LIMIT 8', 
+        pool.query('SELECT * FROM Rei.Word INNER JOIN Rei.Search ON Rei.Word.word = Rei.Search.word ORDER BY Search.search_date DESC LIMIT 8;', 
         (err, results)=> {
             if(err){
                 return reject(err);

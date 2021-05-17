@@ -20,7 +20,7 @@ try {
   const resultados = await page.evaluate(()=>{
     //Els guardo els elements en dos arrays
     //TEXTOS
-    const texts=document.querySelectorAll('.sc-jsqJB');
+    const texts=document.querySelectorAll('.sc-ddash');
     //LINKS
     const links= document.querySelectorAll('.newsFeed_item_link');
    //Creo el objeto final que voy a tener
