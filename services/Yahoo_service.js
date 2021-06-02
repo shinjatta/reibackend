@@ -13,8 +13,8 @@ try {
   //La web que vull buscar
   await page.goto('https://news.yahoo.co.jp/search?p=&ei=utf-8');
   //Buscar la paraula
-  await page.type('input.sc-TOsTZ', word);
-  await page.click("button.sc-cJSrbW");
+  await page.type('.sc-kgoBCf', word);
+  await page.click("button.sc-kpOJdX");
  //Esperar a que es carreguin les diferents noticies
   await page.waitForTimeout(3000);
   const resultados = await page.evaluate(()=>{
